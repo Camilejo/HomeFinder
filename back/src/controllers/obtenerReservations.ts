@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Reservation } from "./reservations";
-import { Property } from "../controllers/Property";
+import { Property } from "./Property";
 
 // Obtener todas las reservas
 export const obtenerReservas = async (req: Request, res: Response) => {
