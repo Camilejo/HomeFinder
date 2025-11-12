@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { FaBed, FaBath, FaUser, FaHouseUser, FaMapMarkerAlt, FaMap   } from "react-icons/fa";
 const PropertyDetail = () => {
   const { id } = useParams(); 
@@ -32,7 +32,8 @@ const PropertyDetail = () => {
     const usuario_id = localStorage.getItem('userId');
   
     if (!usuario_id) {
-      console.log('No se encontró el usuario_id en localStorage.');
+      // Usuario no logueado: marcar que no hay reserva y salir sin hacer logs repetidos
+      setHasReservation(false);
       return false;
     }
   
@@ -175,45 +176,59 @@ const PropertyDetail = () => {
   };
 
 
-  const extractDetails = (descripcion: string) => {
+  const extractDetails = (descripcion?: string | null) => {
+    // Manejar caso donde la descripción sea null o undefined
+    if (!descripcion) {
+      return {
+        maxHuespedes: 0,
+        habitaciones: 0,
+        camas: 0,
+        banos: 0,
+      };
+    }
+
     const regex = /(\d+)\s*(huéspedes|huésped|huespedes|huesped|habitacion|habitaciones|habitación|camas|cama|baños|baño)/g;
     const matches = {
       maxHuespedes: 0,
       habitaciones: 0,
       camas: 0,
-      banos: 0
+      banos: 0,
     };
 
     const found = descripcion.match(regex);
     if (found) {
-        found.forEach((item) => {
-          const match = item.match(/\d+/);  // Buscar el número dentro de cada coincidencia
-          if (match) {
-            const number = parseInt(match[0]);
-            if (item.includes('huéspedes') || item.includes('huésped')|| item.includes('huespedes') || item.includes('huesped')) {
-              matches.maxHuespedes = number;
-            } else if (item.includes('habitaciones') || item.includes('habitación')|| item.includes('habitacion')) {
-              matches.habitaciones = number;
-            } else if (item.includes('camas') || item.includes('cama')) {
-              matches.camas = number;
-            } else if (item.includes('baños') || item.includes('baño')) {
-              matches.banos = number;
-            }
+      found.forEach((item) => {
+        const match = item.match(/\d+/); // Buscar el número dentro de cada coincidencia
+        if (match) {
+          const number = parseInt(match[0], 10);
+          const lower = item.toLowerCase();
+          if (lower.includes('huéspedes') || lower.includes('huésped') || lower.includes('huespedes') || lower.includes('huesped')) {
+            matches.maxHuespedes = number;
+          } else if (lower.includes('habitaciones') || lower.includes('habitación') || lower.includes('habitacion')) {
+            matches.habitaciones = number;
+          } else if (lower.includes('camas') || lower.includes('cama')) {
+            matches.camas = number;
+          } else if (lower.includes('baños') || lower.includes('baño')) {
+            matches.banos = number;
           }
-        });
-      }
-      return matches;
-    };
-    const extractDescription = (descripcion: string) => {
-        const regex = /\d+/; // Encuentra el primer número en la descripción
-        const firstNumberIndex = descripcion.search(regex); // Obtiene el índice del primer número
-        
-        if (firstNumberIndex !== -1) {
-          return descripcion.substring(0, firstNumberIndex).trim(); // Elimina todo después del primer número
         }
-      
-        return descripcion; // Si no hay números, devuelve la descripción original
-      };
+      });
+    }
+
+    return matches;
+  };
+
+  const extractDescription = (descripcion?: string | null) => {
+    if (!descripcion) return '';
+    const regex = /\d+/; // Encuentra el primer número en la descripción
+    const firstNumberIndex = descripcion.search(regex); // Obtiene el índice del primer número
+
+    if (firstNumberIndex !== -1) {
+      return descripcion.substring(0, firstNumberIndex).trim(); // Elimina todo después del primer número
+    }
+
+    return descripcion; // Si no hay números, devuelve la descripción original
+  };
     const details = property ? extractDetails(property.descripcion) : { maxHuespedes: 0, camas: 0, banos: 0, habitaciones: 0 ,};
     const descriptionClean = property ? extractDescription(property.descripcion) : "";
   useEffect(() => {

@@ -106,40 +106,28 @@ export default function Example() {
                 </div>
               </div>
             </div>
-            <Link to={isAuthenticated ? "/agregarInmueble" : "/Login"}>
-                <button
-                  type="button"
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">Nuevos Inmuebles</span>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-200 data-[focus]:bg-gray-100"
-                  >
-                    Agrega nuevos Inmuebles
-                  </a>
-                </button>
-              </Link>
+            <Link
+              to={isAuthenticated ? "/agregarInmueble" : "/Login"}
+              className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 inline-flex items-center"
+            >
+              <span className="sr-only">Nuevos Inmuebles</span>
+              <span className="block px-4 py-2 text-sm text-gray-200">Agrega nuevos Inmuebles</span>
+            </Link>
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
               {!isAuthenticated ? (
                 <>
-                  <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
-                    <Link
-                      to="/Register"
-                      className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0"
-                    >
-                      Registrarse
-                    </Link>
-                  </button>
-                  <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-                    <Link
-                      to="/Login"
-                      className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0"
-                    >
-                      Iniciar Sesión
-                    </Link>
-                  </button>
+                  <Link
+                    to="/Register"
+                    className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
+                  >
+                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">Registrarse</span>
+                  </Link>
+                  <Link
+                    to="/Login"
+                    className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+                  >
+                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">Iniciar Sesión</span>
+                  </Link>
                 </>
               ) : (
                 <Menu as="div" className="relative ml-3">
